@@ -1,0 +1,205 @@
+{
+	"info": {
+		"_postman_id": "f6a7b8c9-d0e1-2345-fa01-345678901234",
+		"name": "Sharing Vision - Backend API Test Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Create Article",
+			"request": {
+				"method": "POST",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"This is a valid test article title exceeding twenty characters\",\n    \"content\": \"This is a comprehensive test article content body designed to completely satisfy the validation requirements. It contains well over two hundred characters so that it smoothly bypasses any validation checks or bad request exceptions during our test sequence.\",\n    \"category\": \"Technology\",\n    \"status\": \"Publish\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/article/",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "8080",
+					"path": ["article", ""]
+				},
+				"description": "Creates a new article with validation rules[cite: 1]."
+			},
+			"response": [
+				{
+					"name": "Success - Created",
+					"originalRequest": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n    \"title\": \"This is a valid test article title exceeding twenty characters\",\n    \"content\": \"This is a comprehensive test article content body designed to completely satisfy the validation requirements. It contains well over two hundred characters so that it smoothly bypasses any validation checks or bad request exceptions during our test sequence.\",\n    \"category\": \"Technology\",\n    \"status\": \"Publish\"\n}"},
+						"url": {"raw": "http://localhost:8080/article/", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["article", ""]}
+					},
+					"status": "Created",
+					"code": 201,
+					"body": "{\n    \"id\": 1,\n    \"title\": \"This is a valid test article title exceeding twenty characters\",\n    \"content\": \"This is a comprehensive test article content body designed to completely satisfy the validation requirements. It contains well over two hundred characters so that it smoothly bypasses any validation checks or bad request exceptions during our test sequence.\",\n    \"category\": \"Technology\",\n    \"status\": \"Publish\",\n    \"created_date\": \"2026-09-03T11:50:00Z\",\n    \"updated_date\": \"2026-09-03T11:50:00Z\"\n}"
+				},
+				{
+					"name": "Failure - Invalid Title (Too Short)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n    \"title\": \"Short\",\n    \"content\": \"This is a comprehensive test article content body designed to completely satisfy the validation requirements. It contains well over two hundred characters so that it smoothly bypasses any validation checks or bad request exceptions during our test sequence.\",\n    \"category\": \"Technology\",\n    \"status\": \"Publish\"\n}"},
+						"url": {"raw": "http://localhost:8080/article/", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["article", ""]}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"body": "{\n    \"error\": \"Key: 'Article.Title' Error:Field validation for 'Title' failed on the 'min' tag\"\n}"
+				}
+			]
+		},
+		{
+			"name": "2. Get Articles (Paging)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/article/10/0",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "8080",
+					"path": ["article", "10", "0"]
+				},
+				"description": "Fetches articles using limit and offset[cite: 1]."
+			},
+			"response": [
+				{
+					"name": "Success - List Retrieved",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {"raw": "http://localhost:8080/article/10/0", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["article", "10", "0"]}
+					},
+					"status": "OK",
+					"code": 200,
+					"body": "[\n    {\n        \"id\": 1,\n        \"title\": \"This is a valid test article title exceeding twenty characters\",\n        \"content\": \"This is a comprehensive test article content body designed to completely satisfy the validation requirements. It contains well over two hundred characters so that it smoothly bypasses any validation checks or bad request exceptions during our test sequence.\",\n        \"category\": \"Technology\",\n        \"status\": \"Publish\",\n        \"created_date\": \"2026-09-03T11:50:00Z\",\n        \"updated_date\": \"2026-09-03T11:50:00Z\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "3. Get Article By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/article/1",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "8080",
+					"path": ["article", "1"]
+				},
+				"description": "Displays a specific article by ID[cite: 1]."
+			},
+			"response": [
+				{
+					"name": "Success - Found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {"raw": "http://localhost:8080/article/1", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["article", "1"]}
+					},
+					"status": "OK",
+					"code": 200,
+					"body": "{\n    \"id\": 1,\n    \"title\": \"This is a valid test article title exceeding twenty characters\",\n    \"content\": \"This is a comprehensive test article content body designed to completely satisfy the validation requirements. It contains well over two hundred characters so that it smoothly bypasses any validation checks or bad request exceptions during our test sequence.\",\n    \"category\": \"Technology\",\n    \"status\": \"Publish\",\n    \"created_date\": \"2026-09-03T11:50:00Z\",\n    \"updated_date\": \"2026-09-03T11:50:00Z\"\n}"
+				},
+				{
+					"name": "Failure - Not Found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {"raw": "http://localhost:8080/article/999", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["article", "999"]}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"body": "{\n    \"error\": \"article not found\"\n}"
+				}
+			]
+		},
+		{
+			"name": "4. Update Article",
+			"request": {
+				"method": "PUT",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"This is an updated valid test article title exceeding twenty characters\",\n    \"content\": \"This is an updated comprehensive test article content body designed to completely satisfy the validation requirements. It contains well over two hundred characters so that it smoothly bypasses any validation checks or bad request exceptions during our test sequence.\",\n    \"category\": \"Programming\",\n    \"status\": \"Draft\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/article/1",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "8080",
+					"path": ["article", "1"]
+				},
+				"description": "Updates an existing article by ID[cite: 1]."
+			},
+			"response": [
+				{
+					"name": "Success - Updated",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n    \"title\": \"This is an updated valid test article title exceeding twenty characters\",\n    \"content\": \"This is an updated comprehensive test article content body designed to completely satisfy the validation requirements. It contains well over two hundred characters so that it smoothly bypasses any validation checks or bad request exceptions during our test sequence.\",\n    \"category\": \"Programming\",\n    \"status\": \"Draft\"\n}"},
+						"url": {"raw": "http://localhost:8080/article/1", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["article", "1"]}
+					},
+					"status": "OK",
+					"code": 200,
+					"body": "{\n    \"id\": 1,\n    \"title\": \"This is an updated valid test article title exceeding twenty characters\",\n    \"content\": \"This is an updated comprehensive test article content body designed to completely satisfy the validation requirements. It contains well over two hundred characters so that it smoothly bypasses any validation checks or bad request exceptions during our test sequence.\",\n    \"category\": \"Programming\",\n    \"status\": \"Draft\",\n    \"created_date\": \"2026-09-03T11:50:00Z\",\n    \"updated_date\": \"2026-09-03T11:55:00Z\"\n}"
+				},
+				{
+					"name": "Failure - Not Found for Update",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n    \"title\": \"This is an updated valid test article title exceeding twenty characters\",\n    \"content\": \"This is an updated comprehensive test article content body designed to completely satisfy the validation requirements. It contains well over two hundred characters so that it smoothly bypasses any validation checks or bad request exceptions during our test sequence.\",\n    \"category\": \"Programming\",\n    \"status\": \"Draft\"\n}"},
+						"url": {"raw": "http://localhost:8080/article/999", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["article", "999"]}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"body": "{\n    \"error\": \"article not found\"\n}"
+				}
+			]
+		},
+		{
+			"name": "5. Delete Article",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/article/1",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "8080",
+					"path": ["article", "1"]
+				},
+				"description": "Deletes an article by ID[cite: 1]."
+			},
+			"response": [
+				{
+					"name": "Success - Deleted",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {"raw": "http://localhost:8080/article/1", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["article", "1"]}
+					},
+					"status": "OK",
+					"code": 200,
+					"body": "{\n    \"message\": \"deleted successfully\"\n}"
+				},
+				{
+					"name": "Failure - Not Found for Deletion",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {"raw": "http://localhost:8080/article/999", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["article", "999"]}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"body": "{\n    \"error\": \"article not found\"\n}"
+				}
+			]
+		}
+	]
+}
