@@ -13,7 +13,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware" // Import Echo middleware
+	"github.com/labstack/echo/v4/middleware"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -59,9 +59,8 @@ func main() {
 
 	e := echo.New()
 
-	// Add the Logger middleware right here!
+	e.Use(middleware.CORS())
 	e.Use(middleware.Logger())
-	// Optional: Add Recover middleware to prevent panics from crashing the server
 	e.Use(middleware.Recover())
 
 	e.Validator = &CustomValidator{validator: validator.New()}
